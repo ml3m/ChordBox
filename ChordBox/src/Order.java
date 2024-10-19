@@ -3,13 +3,12 @@ public class Order implements Discountable {
     private Instrument instrument;
     private Discount[] discounts;
 
-    // Constructor
     public Order(Instrument instrument, Discount[] discounts) {
         this.instrument = instrument;
         this.discounts = discounts;
     }
 
-    // Implement applyDiscount method from Discountable
+    // from Discountable interface
     @Override
     public void applyDiscount() {
         double totalDiscount = 0;
@@ -20,12 +19,10 @@ public class Order implements Discountable {
         System.out.println("Total after discounts: $" + finalPrice);
     }
 
-    // Getter for instrument
     public Instrument getInstrument() {
         return instrument;
     }
 
-    // Getter for discounts
     public Discount[] getDiscounts() {
         return discounts;
     }
