@@ -1,41 +1,40 @@
 public class MusicStoreSystem {
-
     public static void main(String[] args) {
+        OutputDevice outputDevice = new OutputDevice();
 
-        OutputDevice output_device = new OutputDevice();
+        // Create items
+        Item guitar = new Instrument("Guitar", 500);
+        Item piano = new Instrument("Piano", 1000);
+        Item vinylDisk = new Disk("Vinyl Record", 20);
+        Item musicCD = new CD("Greatest Hits CD", 15);
+        Item bandPoster = new Poster("Band Poster", 10);
 
+        // Create discounts
+        Discount[] discounts = {new Discount(10, "percentage"), new Discount(5, "flat")};
 
-        Instrument guitar = new Instrument("Guitar", 500);
-        Instrument piano = new Instrument("Piano", 1000);
+        // Create orders
+        Order guitarOrder = new Order(guitar, discounts);
+        Order cdOrder = new Order(musicCD, discounts);
 
-        Discount[] discounts = {new Discount(10, "percentage"), new Discount(50, "flat")};
+        // Display items
+        outputDevice.writeMessage("Available Items:");
+        listItems(outputDevice, guitar, piano, vinylDisk, musicCD, bandPoster);
 
-        Order order = new Order(guitar, discounts);
-        Customer customer = new Customer("John Doe", "john.doe@example.com");
+        // Calculate discounts
+        outputDevice.writeMessage("Calculating discounts for Guitar and CD:");
+        guitarOrder.applyDiscount();
+        cdOrder.applyDiscount();
 
-        Payment payment = new Payment("Credit Card", 400);
-
-        // based on commnad-line for now...
-        if (args.length > 0) {
-            if (args[0].equals("total")) {
-                // total price after discount.
-                output_device.writeMessage("Calculating total price...");
-                order.applyDiscount();
-            } else if (args[0].equals("list")) {
-                output_device.writeMessage("Listing all instruments...");
-                listInstruments(guitar, piano);
-            } else {
-                output_device.writeMessage("Invalid option. Use 'total' or 'list'.");
-            }
-        } else {
-            output_device.writeMessage("Please provide an argument: 'total' or 'list'.");
-        }
+        // Process payment example
+        Payment payment = new Payment("Credit Card", 500);
+        payment.processPayment();
     }
 
-    private static void listInstruments(Instrument... instruments, output_device) {
-        output_device.writeMessage("Instruments available in the store:");
-        for (Instrument instrument : instruments) {
-            System.out.println("Instrument: " + instrument.getName() + ", Price: $" + instrument.getPrice());
+    // Method to list items
+    private static void listItems(OutputDevice outputDevice, Item... items) {
+        outputDevice.writeMessage("Items in store:");
+        for (Item item : items) {
+            outputDevice.writeMessage("Item: " + item.getName() + ", Price: $" + item.getPrice());
         }
     }
 }

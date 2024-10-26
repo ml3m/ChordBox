@@ -1,26 +1,25 @@
-// Class B - Order
 public class Order implements Discountable {
-    private Instrument instrument;
+    private Item item;
     private Discount[] discounts;
 
-    public Order(Instrument instrument, Discount[] discounts) {
-        this.instrument = instrument;
+    public Order(Item item, Discount[] discounts) {
+        this.item = item;
         this.discounts = discounts;
     }
 
-    // from Discountable interface
     @Override
-    public void applyDiscount() {
+    public double applyDiscount() {
         double totalDiscount = 0;
         for (Discount discount : discounts) {
-            totalDiscount += discount.getDiscountAmount();
+            totalDiscount += discount.calculateDiscount(item.getPrice());
         }
-        double finalPrice = instrument.getPrice() - totalDiscount;
-        System.out.println("Total after discounts: $" + finalPrice);
+        double finalPrice = item.getPrice() - totalDiscount;
+        System.out.println("Total after discounts for " + item.getName() + ": $" + finalPrice);
+        return finalPrice;
     }
 
-    public Instrument getInstrument() {
-        return instrument;
+    public Item getItem() {
+        return item;
     }
 
     public Discount[] getDiscounts() {

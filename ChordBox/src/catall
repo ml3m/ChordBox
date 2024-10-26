@@ -1,0 +1,251 @@
+// CD class inheriting from Item
+public class CD extends Item implements Sellable {
+    public CD(String name, double price) {
+        super(name, price);
+    }
+
+    @Override
+    public void sell() {
+        System.out.println("Selling CD: " + getName() + " for $" + getPrice());
+    }
+}
+// Class D - Customer
+public class Customer {
+    private String name;
+    private String email;
+
+    public Customer(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+}
+// Class C - Discount
+public class Discount {
+    private double amount;
+    private String type; // percentage or flat
+
+    public Discount(double amount, String type) {
+        this.amount = amount;
+        this.type = type;
+    }
+
+    public double getDiscountAmount() {
+        if (type.equals("percentage")) {
+            return amount / 100; 
+        } else if (type.equals("flat")) {
+            return amount; 
+        }
+        return 0;
+    }
+
+    public String getType() {
+        return type;
+    }
+}
+public interface Discountable {
+    void applyDiscount();
+}
+// Disk class inheriting from Item
+public class Disk extends Item implements Sellable {
+    public Disk(String name, double price) {
+        super(name, price);
+    }
+
+    @Override
+    public void sell() {
+        System.out.println("Selling disk: " + getName() + " for $" + getPrice());
+    }
+}
+import java.util.Random;
+
+public class InputDevice {
+    private Random random;
+
+    public InputDevice() {
+        this.random = new Random();
+    }
+
+    public String getType() {
+        return "random";
+    }
+
+    public Integer nextInt() {
+        return random.nextInt(100) + 1;
+    }
+
+    public String getLine() {
+        return "The quick brown fox jumps over the lazy dog.";
+    }
+
+    public Integer[] getNumbers (int N) {
+        Integer[] numArray = new Integer[N];
+        for (int i = 0; i< N; i++) {
+            numArray[i] = nextInt();
+        }
+        return numArray;
+    }
+}
+// Instrument class inheriting from Item
+public class Instrument extends Item implements Sellable {
+    public Instrument(String name, double price) {
+        super(name, price);
+    }
+
+    @Override
+    public void sell() {
+        System.out.println("Selling instrument: " + getName() + " for $" + getPrice());
+    }
+}
+public class Item {
+    private String name;
+    private double price;
+
+    public Item(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+}
+public class MusicStoreSystem {
+    public static void main(String[] args) {
+        OutputDevice outputDevice = new OutputDevice();
+
+        // Creating various items
+        Item guitar = new Instrument("Guitar", 500);
+        Item piano = new Instrument("Piano", 1000);
+        Item vinylDisk = new Disk("Vinyl Record", 20);
+        Item musicCD = new CD("Greatest Hits CD", 15);
+        Item bandPoster = new Poster("Band Poster", 10);
+
+        // Creating discounts
+        Discount[] discounts = {new Discount(10, "percentage"), new Discount(5, "flat")};
+
+        // Creating orders
+        Order guitarOrder = new Order(guitar, discounts);
+        Order cdOrder = new Order(musicCD, discounts);
+
+        // Creating a customer
+        Customer customer = new Customer("John Doe", "john.doe@example.com");
+
+        // Creating payment
+        Payment payment = new Payment("Credit Card", 400);
+        
+        // Process the input arguments
+        if (args.length > 0) {
+            if (args[0].equals("total")) {
+                // Calculate total price after discount for Guitar
+                outputDevice.writeMessage("Calculating total price for Guitar...");
+                guitarOrder.applyDiscount();
+
+                // Calculate total price after discount for CD
+                outputDevice.writeMessage("Calculating total price for CD...");
+                cdOrder.applyDiscount();
+            } else if (args[0].equals("list")) {
+                outputDevice.writeMessage("Listing all items...");
+                listItems(outputDevice, guitar, piano, vinylDisk, musicCD, bandPoster);
+            } else {
+                outputDevice.writeMessage("Invalid option. Use 'total' or 'list'.");
+            }
+        } else {
+            outputDevice.writeMessage("Please provide an argument: 'total' or 'list'.");
+        }
+
+        // Test payment processing
+        payment.processPayment();
+    }
+
+    // List items method
+    private static void listItems(OutputDevice outputDevice, Item... items) {
+        outputDevice.writeMessage("Items available in the store:");
+        for (Item item : items) {
+            outputDevice.writeMessage("Item: " + item.getName() + ", Price: $" + item.getPrice());
+        }
+    }
+}
+// Order class that processes orders for Items
+public class Order implements Discountable {
+    private Item item; // Changed from Product to Item
+    private Discount[] discounts;
+
+    public Order(Item item, Discount[] discounts) {
+        this.item = item;
+        this.discounts = discounts;
+    }
+
+    @Override
+    public void applyDiscount() {
+        double totalDiscount = 0;
+        for (Discount discount : discounts) {
+            totalDiscount += discount.getDiscountAmount(item.getPrice());
+        }
+        double finalPrice = item.getPrice() - totalDiscount;
+        System.out.println("Total after discounts for " + item.getName() + ": $" + finalPrice);
+    }
+
+    public Item getItem() {
+        return item;
+    }
+    public Discount[] getDiscounts() {
+        return discounts;
+    }
+}
+public class OutputDevice {
+
+    public void writeMessage(String message) {
+        System.out.println(message);
+    }
+    
+
+    // made it more modular such that accepts any data type, and prints the
+    // elements.
+    public <T> void printArray(T[] array){
+        writeMessage("the array has the following:");
+
+        for(int i = 0 ; i < array.length ; i++){
+            writeMessage("array["+ i + "]=" + array[i]);
+        }
+    }
+}
+// Class E - Payment
+public class Payment {
+    private String method;
+    private double amountPaid;
+
+    public Payment(String method, double amountPaid) {
+        this.method = method;
+        this.amountPaid = amountPaid;
+    }
+
+    public void processPayment() {
+        System.out.println("Processing payment using " + method + " for $" + amountPaid);
+    }
+}
+// Poster class inheriting from Item
+public class Poster extends Item implements Sellable {
+    public Poster(String name, double price) {
+        super(name, price);
+    }
+
+    @Override
+    public void sell() {
+        System.out.println("Selling poster: " + getName() + " for $" + getPrice());
+    }
+}
+public interface Sellable {
+    void sell();
+}

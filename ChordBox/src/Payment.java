@@ -1,4 +1,3 @@
-// Class E - Payment
 public class Payment {
     private String method;
     private double amountPaid;
@@ -9,6 +8,6 @@ public class Payment {
     }
 
     public void processPayment() {
-        System.out.println("Processing payment using " + method + " for $" + amountPaid);
+        System.out.println("Processing payment with " + method + " for $" + amountPaid);
     }
 }

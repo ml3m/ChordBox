@@ -1,18 +1,17 @@
-// Class C - Discount
 public class Discount {
     private double amount;
-    private String type; // percentage or flat
+    private String type; // "percentage" or "flat"
 
     public Discount(double amount, String type) {
         this.amount = amount;
         this.type = type;
     }
 
-    public double getDiscountAmount() {
+    public double calculateDiscount(double price) {
         if (type.equals("percentage")) {
-            return amount / 100; 
+            return price * (amount / 100);
         } else if (type.equals("flat")) {
-            return amount; 
+            return amount;
         }
         return 0;
     }

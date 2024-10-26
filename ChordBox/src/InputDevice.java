@@ -19,9 +19,9 @@ public class InputDevice {
         return "The quick brown fox jumps over the lazy dog.";
     }
 
-    public Integer[] getNumbers (int N) {
+    public Integer[] getNumbers(int N) {
         Integer[] numArray = new Integer[N];
-        for (int i = 0; i< N; i++) {
+        for (int i = 0; i < N; i++) {
             numArray[i] = nextInt();
         }
         return numArray;
