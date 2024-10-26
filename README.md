@@ -20,9 +20,9 @@
                 +--------+----------+-------------------+
                 |        |          |                   |
     +------------------+ | +-----------------+  +-----------------+
-    |       CD         | | |      Disk      |  |    Instrument   |
+    |       CD         | | |       Disk      |  |    Instrument   |
     +------------------+ | +-----------------+  +-----------------+
-    | + sell(): void   | | | + sell(): void |  | + sell(): void  |
+    | + sell(): void   | | | + sell(): void  |  | + sell(): void  |
     +------------------+ | +-----------------+  +-----------------+
                          |
                 +-------------------------+
@@ -33,39 +33,39 @@
 
 
 +----------------------------------+      +------------------------------------+
-|           Sellable               |      |          Discountable             |
+|           Sellable               |      |          Discountable              |
 +----------------------------------+      +------------------------------------+
-| <<interface>>                    |      | <<interface>>                      |
+| <interface>                      |      | <interface>                        |
 | + sell(): void                   |      | + applyDiscount(): double          |
 +----------------------------------+      +------------------------------------+
 
 +----------------------------------+      +------------------------------------+
-|           Discount               |      |           Order                   |
+|           Discount               |      |           Order                    |
 +----------------------------------+      +------------------------------------+
-| - amount: double                 |      | - item: Item                      |
-| - type: String                   |      | - discounts: Discount[]           |
+| - amount: double                 |      | - item: Item                       |
+| - type: String                   |      | - discounts: Discount[]            |
 +----------------------------------+      +------------------------------------+
-| + Discount(amount, type)         |      | + Order(item, discounts)          |
-| + calculateDiscount(price): double|     | + applyDiscount(): double          |
+| + Discount(amount, type)         |      | + Order(item, discounts)           |
+| + calculateDiscount(price):double|      | + applyDiscount(): double          |
 +----------------------------------+      +------------------------------------+
 
 +----------------------------------+      +------------------------------------+
-|           Customer               |      |           Payment                 |
+|           Customer               |      |           Payment                  |
 +----------------------------------+      +------------------------------------+
-| - name: String                   |      | - method: String                  |
-| - email: String                  |      | - amountPaid: double              |
+| - name: String                   |      | - method: String                   |
+| - email: String                  |      | - amountPaid: double               |
 +----------------------------------+      +------------------------------------+
-| + getName(): String              |      | + processPayment(): void          |
+| + getName(): String              |      | + processPayment(): void           |
 | + getEmail(): String             |      +------------------------------------+
 +----------------------------------+
 
 +----------------------------------+      +------------------------------------+
-|         InputDevice              |      |         OutputDevice              |
+|         InputDevice              |      |         OutputDevice               |
 +----------------------------------+      +------------------------------------+
-| - random: Random                 |      |                                   |
-+----------------------------------+      |                                   |
-| + getType(): String              |      | + writeMessage(message: String)   |
-| + nextInt(): Integer             |      | + printArray<T>(array: T[]): void |
+| - random: Random                 |      |                                    |
++----------------------------------+      |                                    |
+| + getType(): String              |      | + writeMessage(message: String)    |
+| + nextInt(): Integer             |      | + printArray<T>(array: T[]): void  |
 | + getLine(): String              |      +------------------------------------+
 | + getNumbers(N: int): Integer[]  |
 +----------------------------------+
@@ -73,7 +73,7 @@
                           +-------------------------+
                           |     MusicStoreSystem    |
                           +-------------------------+
-                          | <<Main Class>>          |
+                          |   <Main Class>          |
                           +-------------------------+
                           | + main(args: String[])  |
                           +-------------------------+
