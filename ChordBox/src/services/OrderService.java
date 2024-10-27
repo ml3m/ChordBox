@@ -22,6 +22,21 @@ public class OrderService {
         return orders;
     }
 
+    public String getTotalSales() {
+        // Implement SQL query to get total sales
+        return "5000";  // Replace with actual value from DB
+    }
+
+    public String getDailyRevenue() {
+        // Implement SQL query to get revenue for today
+        return "1200";  // Replace with actual value from DB
+    }
+
+    public String getTopSellingItem() {
+        // Implement SQL query to get the most sold item
+        return "Guitar";  // Replace with actual item name from DB
+    }
+
     public void placeOrder(Order order, Customer customer) {
         orders.add(order);
         customers.add(customer);

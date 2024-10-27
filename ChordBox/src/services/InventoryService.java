@@ -14,6 +14,11 @@ public class InventoryService {
         DatabaseUtil.initializeInventoryDatabase();
     }
 
+    public String getInventoryCount() {
+        // Implement SQL query to count all inventory items
+        return "300";  // Replace with actual count from DB
+    }
+
     public void addItem(Item item) {
         String sql = "INSERT INTO Items (name, price, type) VALUES (?, ?, ?)";
 

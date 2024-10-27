@@ -11,6 +11,10 @@ public class CustomerService {
     public CustomerService() {
         this.customers = new ArrayList<>();
     }
+    public String getCustomerCount() {
+        // Implement SQL query to count all customers
+        return "150";  // Replace with actual count from DB
+    }
 
     public void addCustomer(Customer customer) {
         customers.add(customer);
