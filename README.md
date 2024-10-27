@@ -3,12 +3,12 @@
 ## Work in progress..
 
    <div align="center">
-     <img src="images/chordbox_logo.png" alt="Project logo" width="250"/>
+     <img src="assets/chordbox_logo.png" alt="Project logo" width="250"/>
    </div>
 
 ```bash
                           +-------------------------+
-                          |       models.Item              |
+                          |       com.chordbox.models.Item              |
                           +-------------------------+
                           | - name: String          |
                           | - price: double         |
@@ -21,37 +21,37 @@
                 +--------+----------+-------------------+
                 |        |          |                   |
     +------------------+ | +-----------------+  +-----------------+
-    |       models.CD         | | |       models.Disk      |  |    models.Instrument   |
+    |       com.chordbox.models.CD         | | |       com.chordbox.models.Disk      |  |    com.chordbox.models.Instrument   |
     +------------------+ | +-----------------+  +-----------------+
     | + sell(): void   | | | + sell(): void  |  | + sell(): void  |
     +------------------+ | +-----------------+  +-----------------+
                          |
                 +-------------------------+
-                |       models.Poster            |
+                |       com.chordbox.models.Poster            |
                 +-------------------------+
                 | + sell(): void          |
                 +-------------------------+
 
 
 +----------------------------------+      +------------------------------------+
-|           utils.Sellable               |      |          utils.Discountable              |
+|           com.chordbox.utils.Sellable               |      |          com.chordbox.utils.Discountable              |
 +----------------------------------+      +------------------------------------+
 | <interface>                      |      | <interface>                        |
 | + sell(): void                   |      | + applyDiscount(): double          |
 +----------------------------------+      +------------------------------------+
 
 +----------------------------------+      +------------------------------------+
-|           models.Discount               |      |           models.Order                    |
+|           com.chordbox.models.Discount               |      |           com.chordbox.models.Order                    |
 +----------------------------------+      +------------------------------------+
-| - amount: double                 |      | - item: models.Item                       |
-| - type: String                   |      | - discounts: models.Discount[]            |
+| - amount: double                 |      | - item: com.chordbox.models.Item                       |
+| - type: String                   |      | - discounts: com.chordbox.models.Discount[]            |
 +----------------------------------+      +------------------------------------+
-| + models.Discount(amount, type)         |      | + models.Order(item, discounts)           |
+| + com.chordbox.models.Discount(amount, type)         |      | + com.chordbox.models.Order(item, discounts)           |
 | + calculateDiscount(price):double|      | + applyDiscount(): double          |
 +----------------------------------+      +------------------------------------+
 
 +----------------------------------+      +------------------------------------+
-|           models.Customer               |      |           models.Payment                  |
+|           com.chordbox.models.Customer               |      |           com.chordbox.models.Payment                  |
 +----------------------------------+      +------------------------------------+
 | - name: String                   |      | - method: String                   |
 | - email: String                  |      | - amountPaid: double               |
@@ -61,7 +61,7 @@
 +----------------------------------+
 
 +----------------------------------+      +------------------------------------+
-|         utils.InputDevice              |      |         utils.OutputDevice               |
+|         com.chordbox.utils.InputDevice              |      |         com.chordbox.utils.OutputDevice               |
 +----------------------------------+      +------------------------------------+
 | - random: Random                 |      |                                    |
 +----------------------------------+      |                                    |
@@ -72,7 +72,7 @@
 +----------------------------------+
 
                           +-------------------------+
-                          |     MusicStoreSystem    |
+                          |     com.chordbox.MusicStoreSystem    |
                           +-------------------------+
                           |   <Main Class>          |
                           +-------------------------+
