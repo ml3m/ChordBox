@@ -27,32 +27,75 @@ public class OrderPanel extends JPanel {
 
     public OrderPanel() {
         this.orderService = new OrderService();
-        this.inventoryService = new InventoryService(); // Access inventory
+        this.inventoryService = new InventoryService();
 
         setLayout(new BorderLayout());
 
-        // Order input panel
-        JPanel orderInputPanel = new JPanel(new GridLayout(6, 2));
+        // Create main input panel with GridBagLayout for more precise control
+        JPanel orderInputPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);  // Margins around components
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        
+        // Define field sizes
+        Dimension fieldSize = new Dimension(150, 20);
+        
+        // Customer Name
         customerNameField = new JTextField();
+        customerNameField.setPreferredSize(fieldSize);
+        customerNameField.setFont(new Font("Arial", Font.PLAIN, 12));  // Set a smaller font if necessary
+        
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        orderInputPanel.add(new JLabel("Customer Name:"), gbc);
+
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        orderInputPanel.add(customerNameField, gbc);
+
+        // Customer Email
         customerEmailField = new JTextField();
+        customerEmailField.setPreferredSize(fieldSize);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        orderInputPanel.add(new JLabel("Customer Email:"), gbc);
+
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        orderInputPanel.add(customerEmailField, gbc);
+
+        // Payment Method
         paymentMethodCombo = new JComboBox<>(new String[]{"Card", "Cash"});
+        paymentMethodCombo.setPreferredSize(fieldSize);
+        
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        orderInputPanel.add(new JLabel("Payment Method:"), gbc);
 
-        JButton placeOrderButton = new JButton("Place Order");
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        orderInputPanel.add(paymentMethodCombo, gbc);
 
-        // Set up product selection list
+        // Product Selection List
         productSelectionList = new JList<>(getInventoryItemNames());
         productSelectionList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         JScrollPane productScrollPane = new JScrollPane(productSelectionList);
+        productScrollPane.setPreferredSize(new Dimension(150, 80));  // Adjust height of list scroll pane
 
-        orderInputPanel.add(new JLabel("Customer Name:"));
-        orderInputPanel.add(customerNameField);
-        orderInputPanel.add(new JLabel("Customer Email:"));
-        orderInputPanel.add(customerEmailField);
-        orderInputPanel.add(new JLabel("Payment Method:"));
-        orderInputPanel.add(paymentMethodCombo);
-        orderInputPanel.add(new JLabel("Select Products:"));
-        orderInputPanel.add(productScrollPane);
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        orderInputPanel.add(new JLabel("Select Products:"), gbc);
 
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        orderInputPanel.add(productScrollPane, gbc);
+
+        // Place the input panel in the NORTH section of the main panel
         add(orderInputPanel, BorderLayout.NORTH);
 
         // Orders list display
@@ -61,12 +104,12 @@ public class OrderPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(ordersList);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Add button to place order
+        // Place Order button at the bottom
+        JButton placeOrderButton = new JButton("Place Order");
         placeOrderButton.addActionListener(this::handlePlaceOrder);
         add(placeOrderButton, BorderLayout.SOUTH);
     }
 
-    // Populate product selection list from inventory
     private DefaultListModel<String> getInventoryItemNames() {
         DefaultListModel<String> model = new DefaultListModel<>();
         for (Item item : inventoryService.getInventory()) {
@@ -75,44 +118,32 @@ public class OrderPanel extends JPanel {
         return model;
     }
 
-    // Handle order placement
     private void handlePlaceOrder(ActionEvent e) {
         String name = customerNameField.getText();
         String email = customerEmailField.getText();
         String paymentMethod = (String) paymentMethodCombo.getSelectedItem();
 
-        // Create customer
         Customer customer = new Customer(name, email);
-
-        // Process selected items
         List<Item> selectedItems = getSelectedItems();
         if (selectedItems.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please select at least one product.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Calculate total payment amount
         double totalAmount = calculateTotal(selectedItems);
-
-        // Create payment
         Payment payment = new Payment(paymentMethod, totalAmount);
 
-        // Create and place order if items are available
         if (inventoryService.checkInventoryAvailability(selectedItems)) {
-            Order order = new Order(selectedItems.get(0), null); // Assuming discounts are null for simplicity
+            Order order = new Order(selectedItems.get(0), null);
             orderService.placeOrder(order, customer);
 
-            // Create transaction
             String transactionId = "TXN" + System.currentTimeMillis();
             Transaction transaction = new Transaction(transactionId, customer, List.of(order), payment, new java.util.Date());
             transaction.printTransactionDetails();
 
-            // Save transaction to database
-            // Example usage in OrderPanel to save a transaction
             String transactionDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
             DatabaseUtil.saveTransaction(transactionId, customer.getName(), customer.getEmail(), paymentMethod, totalAmount, transactionDate);
 
-            // Remove ordered items from inventory
             inventoryService.removeItems(selectedItems);
             updateProductSelection();
 
@@ -122,7 +153,6 @@ public class OrderPanel extends JPanel {
         }
     }
 
-    // Get selected items from inventory
     private List<Item> getSelectedItems() {
         List<Item> selectedItems = new ArrayList<>();
         for (String selectedValue : productSelectionList.getSelectedValuesList()) {
@@ -132,12 +162,10 @@ public class OrderPanel extends JPanel {
         return selectedItems;
     }
 
-    // Calculate total price of selected items
     private double calculateTotal(List<Item> items) {
         return items.stream().mapToDouble(Item::getPrice).sum();
     }
 
-    // Update product selection list after items are removed
     private void updateProductSelection() {
         productSelectionList.setModel(getInventoryItemNames());
     }

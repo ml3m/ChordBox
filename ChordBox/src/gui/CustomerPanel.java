@@ -2,11 +2,8 @@ package gui;
 
 import models.Customer;
 import services.CustomerService;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class CustomerPanel extends JPanel {
     private CustomerService customerService;
@@ -16,17 +13,39 @@ public class CustomerPanel extends JPanel {
         this.customerService = new CustomerService();
         setLayout(new BorderLayout());
 
-        // Input panel for adding a new customer
-        JPanel addCustomerPanel = new JPanel(new GridLayout(3, 2));
-        JTextField customerNameField = new JTextField();
-        JTextField customerEmailField = new JTextField();
-        JButton addCustomerButton = new JButton("Add Customer");
+        // Panel for customer input form
+        JPanel addCustomerPanel = new JPanel(new GridBagLayout());
+        addCustomerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Outer padding
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5); // Spacing between components
 
-        addCustomerPanel.add(new JLabel("Customer Name:"));
-        addCustomerPanel.add(customerNameField);
-        addCustomerPanel.add(new JLabel("Customer Email:"));
-        addCustomerPanel.add(customerEmailField);
-        addCustomerPanel.add(addCustomerButton);
+        JTextField customerNameField = new JTextField(15);
+        JTextField customerEmailField = new JTextField(15);
+        JButton addCustomerButton = new JButton("Add Customer");
+        addCustomerButton.putClientProperty("JButton.arc", 20); // Rounded button corners
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        addCustomerPanel.add(new JLabel("Customer Name:"), gbc);
+
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        addCustomerPanel.add(customerNameField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        addCustomerPanel.add(new JLabel("Customer Email:"), gbc);
+
+        gbc.gridx = 1;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        addCustomerPanel.add(customerEmailField, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        addCustomerPanel.add(addCustomerButton, gbc);
 
         add(addCustomerPanel, BorderLayout.NORTH);
 
@@ -36,22 +55,19 @@ public class CustomerPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(customerList);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Add customer action
-        addCustomerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String name = customerNameField.getText();
-                String email = customerEmailField.getText();
+        // Button action for adding a customer
+        addCustomerButton.addActionListener(e -> {
+            String name = customerNameField.getText();
+            String email = customerEmailField.getText();
 
-                if (!name.isEmpty() && !email.isEmpty()) {
-                    Customer customer = new Customer(name, email);
-                    customerService.addCustomer(customer);
-                    customerListModel.addElement(customer.getName() + " - " + customer.getEmail());
-                    customerNameField.setText("");
-                    customerEmailField.setText("");
-                } else {
-                    JOptionPane.showMessageDialog(CustomerPanel.this, "Please fill in both name and email fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
-                }
+            if (!name.isEmpty() && !email.isEmpty()) {
+                Customer customer = new Customer(name, email);
+                customerService.addCustomer(customer);
+                customerListModel.addElement(customer.getName() + " - " + customer.getEmail());
+                customerNameField.setText("");
+                customerEmailField.setText("");
+            } else {
+                JOptionPane.showMessageDialog(CustomerPanel.this, "Please fill in both name and email fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
             }
         });
     }

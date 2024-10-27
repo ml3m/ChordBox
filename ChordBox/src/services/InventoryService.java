@@ -51,6 +51,7 @@ public class InventoryService {
             System.err.println("Failed to retrieve inventory: " + e.getMessage());
         }
 
+        System.out.println("Retrieved items: " + items); // Log fetched items
         return items;
     }
 
@@ -90,6 +91,23 @@ public class InventoryService {
             }
         } catch (SQLException e) {
             System.err.println("Failed to delete item: " + e.getMessage());
+        }
+    }
+
+    // New method to update an existing item in the inventory by name
+    public boolean updateItem(String originalName, Item updatedItem) {
+        String sql = "UPDATE Items SET name = ?, price = ?, type = ? WHERE name = ?";
+        try (Connection conn = DatabaseUtil.getInventoryConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, updatedItem.getName());
+            pstmt.setDouble(2, updatedItem.getPrice());
+            pstmt.setString(3, updatedItem.getClass().getSimpleName());
+            pstmt.setString(4, originalName);
+
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.err.println("Failed to update item: " + e.getMessage());
+            return false;
         }
     }
 
