@@ -8,7 +8,7 @@
 
 ```bash
                           +-------------------------+
-                          |       Item              |
+                          |       models.Item              |
                           +-------------------------+
                           | - name: String          |
                           | - price: double         |
@@ -21,37 +21,37 @@
                 +--------+----------+-------------------+
                 |        |          |                   |
     +------------------+ | +-----------------+  +-----------------+
-    |       CD         | | |       Disk      |  |    Instrument   |
+    |       models.CD         | | |       models.Disk      |  |    models.Instrument   |
     +------------------+ | +-----------------+  +-----------------+
     | + sell(): void   | | | + sell(): void  |  | + sell(): void  |
     +------------------+ | +-----------------+  +-----------------+
                          |
                 +-------------------------+
-                |       Poster            |
+                |       models.Poster            |
                 +-------------------------+
                 | + sell(): void          |
                 +-------------------------+
 
 
 +----------------------------------+      +------------------------------------+
-|           Sellable               |      |          Discountable              |
+|           utils.Sellable               |      |          utils.Discountable              |
 +----------------------------------+      +------------------------------------+
 | <interface>                      |      | <interface>                        |
 | + sell(): void                   |      | + applyDiscount(): double          |
 +----------------------------------+      +------------------------------------+
 
 +----------------------------------+      +------------------------------------+
-|           Discount               |      |           Order                    |
+|           models.Discount               |      |           models.Order                    |
 +----------------------------------+      +------------------------------------+
-| - amount: double                 |      | - item: Item                       |
-| - type: String                   |      | - discounts: Discount[]            |
+| - amount: double                 |      | - item: models.Item                       |
+| - type: String                   |      | - discounts: models.Discount[]            |
 +----------------------------------+      +------------------------------------+
-| + Discount(amount, type)         |      | + Order(item, discounts)           |
+| + models.Discount(amount, type)         |      | + models.Order(item, discounts)           |
 | + calculateDiscount(price):double|      | + applyDiscount(): double          |
 +----------------------------------+      +------------------------------------+
 
 +----------------------------------+      +------------------------------------+
-|           Customer               |      |           Payment                  |
+|           models.Customer               |      |           models.Payment                  |
 +----------------------------------+      +------------------------------------+
 | - name: String                   |      | - method: String                   |
 | - email: String                  |      | - amountPaid: double               |
@@ -61,7 +61,7 @@
 +----------------------------------+
 
 +----------------------------------+      +------------------------------------+
-|         InputDevice              |      |         OutputDevice               |
+|         utils.InputDevice              |      |         utils.OutputDevice               |
 +----------------------------------+      +------------------------------------+
 | - random: Random                 |      |                                    |
 +----------------------------------+      |                                    |

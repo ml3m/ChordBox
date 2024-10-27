@@ -1,3 +1,7 @@
+package models;
+
+import utils.Sellable;
+
 public class Instrument extends Item implements Sellable {
     public Instrument(String name, double price) {
         super(name, price);

@@ -1,3 +1,5 @@
+package models;
+
 public class Payment {
     private String method;
     private double amountPaid;
@@ -9,5 +11,15 @@ public class Payment {
 
     public void processPayment() {
         System.out.println("Processing payment with " + method + " for $" + amountPaid);
+    }
+
+    // Getter for method
+    public String getMethod() {
+        return method;
+    }
+
+    // Getter for amountPaid
+    public double getAmountPaid() {
+        return amountPaid;
     }
 }

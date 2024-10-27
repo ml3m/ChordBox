@@ -1,3 +1,7 @@
+package models;
+
+import utils.Sellable;
+
 public class Disk extends Item implements Sellable {
     public Disk(String name, double price) {
         super(name, price);

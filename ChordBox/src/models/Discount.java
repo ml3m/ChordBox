@@ -1,6 +1,8 @@
+package models;
+
 public class Discount {
     private double amount;
-    private String type; // "percentage" or "flat"
+    private String type;
 
     public Discount(double amount, String type) {
         this.amount = amount;
@@ -8,9 +10,9 @@ public class Discount {
     }
 
     public double calculateDiscount(double price) {
-        if (type.equals("percentage")) {
+        if (type.equalsIgnoreCase("percentage")) {
             return price * (amount / 100);
-        } else if (type.equals("flat")) {
+        } else if (type.equalsIgnoreCase("flat")) {
             return amount;
         }
         return 0;
